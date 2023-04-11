@@ -20,8 +20,9 @@ def linear_kernel(X1, X2):
     :return:    C Matrix.
     type       np.array()
     """
-    # TODO: implement
-    return None
+    T3 = np.dot(X1, X2)
+    
+    return T3
 
 
 def nonlinear_kernel(X1, X2, sigma=0.5):
