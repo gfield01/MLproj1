@@ -59,14 +59,26 @@ def objective_function(X, y, a, kernel):
     Returns:
         The value of the objective function for the given inputs.
     """
-    # TODO: implement
-    
-    # Reshape a and y to be column vectors
+
+    a = a.T
+    y = y.T
 
     # Compute the value of the objective function
     # The first term is the sum of all Lagrange multipliers
+    
+    first_term = np.sum(a)
+    
     # The second term involves the kernel matrix, the labels and the Lagrange multipliers
-    return None
+    
+    matrix_size = len(y)
+    second_term = 0
+    
+    for i in range(matrix_size):
+        for j in range(matrix_size):
+            kernel_matrix = kernel(X[i], X[j])
+            second_term += a[i] * a[j] * y[i] * y[j] * kernel_matrix
+            
+    return (first_term - (second_term / 2)) * -1
 
 
 class SVM(object):
