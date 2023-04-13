@@ -157,25 +157,25 @@ class SVM(object):
           Fitted estimator.
         """
         # save alpha parameters, weights, and bias weight
-
-        
         # TODO: Define the constraints for the optimization problem
         constraints = ({'type': 'ineq', 'fun': lambda a: a},
                        {'type': 'eq', 'fun': lambda a: np.dot(a, y)})
-        
-        # TODO: Use minimize from scipy.optimize to find the optimal Lagrange multipliers
-        
+
         res = minimize(lambda a: objective_function(X, y, a, self.kernel), np.zeroes(y.shape), constraints=constraints)
         self.a = np.array(res.x)
-        
+
         # TODO: Substitute into dual problem to find weights
-        
-        # self.w = ...
-        
+
+        supvecs = np.where(self.alpha > 1e-8)
+
+        self.w = np.array([np.dot(np.dot(self.a[supvecs], y[supvecs]), np.sum(i[supvecs])) for i in X.T])
+        #This is my other idea
+        #self.w = np.array([np.dot(self.a[supvecs], y[supvecs] * X[supvecs, i]) for i in range(X.shape[1])])
+
         # TODO: Substitute into a support vector to find bias
         
-        # self.b = ...
-
+        supvec_idx = supvecs[0][0]
+        self.b = y[supvec_idx] - np.dot(self.w, X[supvec_idx])
 
         return self
 
