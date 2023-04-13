@@ -160,14 +160,13 @@ class SVM(object):
 
         
         # TODO: Define the constraints for the optimization problem
-        
-        # constraints = ({'type': 'ineq', 'fun': ...},
-        #                {'type': 'eq', 'fun': ...})
+        constraints = ({'type': 'ineq', 'fun': lambda a: a},
+                       {'type': 'eq', 'fun': lambda a: np.dot(a, y)})
         
         # TODO: Use minimize from scipy.optimize to find the optimal Lagrange multipliers
         
-        # res = minimize(...)
-        # self.a = ...
+        res = minimize(lambda a: objective_function(X, y, a, self.kernel), np.zeroes(y.shape), constraints=constraints)
+        self.a = np.array(res.x)
         
         # TODO: Substitute into dual problem to find weights
         
